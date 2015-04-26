@@ -32,11 +32,13 @@ class VersionCollection
 
     public function getVersions($from, $to) 
     {
-        $from = (string) $from;
-        $to = (string) $to;
         $direction = $from > $to ? 'down' : 'up';
         $result = array();
         $versions = $this->versions;
+
+        if ($from == $to) {
+            return array();
+        }
 
         if ($direction === 'up') {
             ksort($versions, SORT_STRING);
@@ -44,7 +46,7 @@ class VersionCollection
             krsort($versions, SORT_STRING);
         }
 
-        $found = false;
+        $found = $from === null ? true : false;
         foreach ($versions as $timestamp => $version) {
             if ($timestamp == $from) {
                 $found = true;
@@ -60,7 +62,6 @@ class VersionCollection
                 continue;
             }
 
-
             if ($timestamp == $to) {
                 if ($direction == 'up') {
                     $result[$timestamp] = $version;
@@ -68,14 +69,22 @@ class VersionCollection
                 break;
             }
 
+
             $result[$timestamp] = $version;
         }
+
 
         return $result;
     }
 
     public function getLatestVersion()
     {
-        return end($this->versions);
+        end($this->versions);
+        return key($this->versions);
+    }
+
+    private function normalizeTs($ts)
+    {
+        return $ts ? 'V' . $ts : null;
     }
 }

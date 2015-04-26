@@ -44,8 +44,8 @@ class VersionFinder
                 throw MigratorException::versionNotInstance($className);
             }
 
-            $versionTimestamp = substr($versionFile->getBaseName(), 8, 12);
-            $versions[$versionTimestamp] = $version;
+            $versionTimestamp = substr($versionFile->getBaseName(), 7, 12);
+            $versions['V'.$versionTimestamp] = $version;
         }
 
         $collection = new VersionCollection($versions);

@@ -8,9 +8,11 @@ use PHPCR\SimpleCredentials;
 
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
+    protected $session;
+
     public function initPhpcr()
     {
-        $path = __DIR__ . '/../../../../../data';
+        $path = __DIR__ . '/data';
         $sfFs = new Filesystem();
         $sfFs->remove($path);
         $factory = new RepositoryFactoryFilesystem();

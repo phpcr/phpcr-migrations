@@ -36,6 +36,12 @@ class Migrator
     {
         if ($to === null) {
             $to = $this->versionCollection->getLatestVersion();
+        } else {
+            $to = 'V' . $to;
+        }
+
+        if (false === $to) {
+            return array();
         }
 
         $to = (string) $to;
@@ -45,13 +51,12 @@ class Migrator
         }
 
         $from = $this->versionStorage->getCurrentVersion();
-        $from = (string) $from;
         $direction = $from > $to ? 'down' : 'up';
 
         $versionsToExecute = $this->versionCollection->getVersions($from, $to, $direction);
 
         if (!$versionsToExecute) {
-            throw MigratorException::noMigrationsToExecute();
+            return array();
         }
 
         $start = microtime(true);
@@ -64,8 +69,16 @@ class Migrator
             } else {
                 $this->versionStorage->add($timestamp);
             }
+
         }
 
-        $output->writeln('<info>Done. Executed </info>%s<info> migration versions</info> %s', count($versionsToExecute), number_format(microtime(true) - $start), 4);
+        $this->session->save();
+
+        $output->writeln(sprintf(
+            '<info>Done. Executed </info>%s<info> migration versions</info> %s', 
+            count($versionsToExecute), number_format(microtime(true) - $start, 4)
+        ));
+
+        return $versionsToExecute;
     }
 }

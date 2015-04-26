@@ -10,12 +10,15 @@
 
 namespace DTL\PhpcrMigrations;
 
+use PHPCR\SessionInterface;
+
 class VersionStorage
 {
     private $session;
     private $storageNodeName;
+    private $initialized = false;
 
-    public function __construct(SessionInterface $session, $storageNodeName = 'phpcr:migrations')
+    public function __construct(SessionInterface $session, $storageNodeName = 'phpcrMigrations:versions')
     {
         $this->session = $session;
         $this->storageNodeName = $storageNodeName;
@@ -23,15 +26,19 @@ class VersionStorage
 
     public function init()
     {
+        if ($this->initialized) {
+            return;
+        }
+
         $this->workspace = $this->session->getWorkspace();
         $nodeTypeManager = $this->workspace->getNodeTypeManager();
 
-        if (!$nodeTypeManager->hasNodeType('phpcr:migrationversion')) {
+        if (!$nodeTypeManager->hasNodeType('phpcrMigration:version')) {
             $nodeTypeManager->registerNodeTypesCnd(<<<EOT
 <phpcrMigrations = 'http://www.danteech.com/phpcr-migrations'>
 [phpcrMigrations:version] > nt:base
 [phpcrMigrations:versions] > nt:base
-+phpcrMigrations:version
++* (phpcrMigrations:version)
 EOT
             , true);
         }
@@ -41,7 +48,7 @@ EOT
         if ($rootNode->hasNode($this->storageNodeName)) {
             $storageNode = $rootNode->getNode($this->storageNodeName);
         } else {
-            $storageNode = $rootNode->addNode($this->storageNodeName, 'phpcrmigrations:migrations');
+            $storageNode = $rootNode->addNode($this->storageNodeName, 'phpcrMigrations:versions');
         }
 
         $this->storageNode = $storageNode;
@@ -49,24 +56,38 @@ EOT
 
     public function getPersistedVersions()
     {
+        $this->init();
+
         $versions = $this->storageNode->getNodeNames();
         return $versions;
     }
 
     public function getCurrentVersion()
     {
-        $versions = $this->storageNode->getNodeNames();
+        $this->init();
+
+        $versions = (array) $this->storageNode->getNodeNames();
+
+        if (!$versions) {
+            return null;
+        }
+        
         asort($versions);
+
         return end($versions);
     }
 
     public function remove($timestamp)
     {
+        $this->init();
+
         $this->storageNode->getNode($timestamp)->remove();
     }
 
     public function add($timestamp)
     {
-        $this->storageNode->addNode($timestamp, 'phpcrmigrations:version');
+        $this->init();
+
+        $this->storageNode->addNode($timestamp, 'phpcrMigrations:version');
     }
 }
