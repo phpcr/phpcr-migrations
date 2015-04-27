@@ -63,7 +63,7 @@ class Migrator
 
         $to = (string) $to;
 
-        if (!$this->versionCollection->has($to)) {
+        if ($to !== 'V0' && !$this->versionCollection->has($to)) {
             throw MigratorException::unknownVersion($to);
         }
 
@@ -92,8 +92,6 @@ class Migrator
 
             $this->session->save();
         }
-
-
 
         return $versionsToExecute;
     }

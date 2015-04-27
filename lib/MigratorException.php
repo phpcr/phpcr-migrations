@@ -36,4 +36,15 @@ class MigratorException extends \Exception
     {
         return new self('Cannot initiaialize a content repository with previously existing migrations.');
     }
+
+    public static function noClassesInVersionFile($file)
+    {
+        return new self(sprintf('No classes found in version file "%s"', $file));
+    }
+
+    public static function moreThanOneClassInVersionFile($file)
+    {
+        return new self(sprintf('More than one class found in version file "%s"', $file));
+    }
+
 }

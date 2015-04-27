@@ -1,8 +1,11 @@
 PHPCR Migrations
 ================
 
-Migrations library for PHPCR based heavily on [Doctrine
+Migrations library for PHPCR influenced by [Doctrine
 migrations](https://github.com/doctrine/migrations).
+
+For integration with Symfony see the [PHPCR Migrations
+Bundle](https://github.com/dantleech/phpcr-migrations-bundle).
 
 Usage
 -----

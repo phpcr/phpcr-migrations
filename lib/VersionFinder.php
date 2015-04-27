@@ -34,11 +34,21 @@ class VersionFinder
 
         foreach ($finder as $versionFile) {
             $className = $versionFile->getBasename('.php');
+            $declaredClasses = get_declared_classes();
             require_once($versionFile->getRealPath());
-            if (!class_exists($className)) {
-                throw MigratorException::couldNotIntantiateVersionClass($className);
+            $newClasses = array_diff(get_declared_classes(), $declaredClasses);
+
+            if (count($newClasses) === 0) {
+                throw MigratorException::noClassesInVersionFile($versionFile->getBaseName());
             }
-            $version = new $className();
+
+            if (count($newClasses) !== 1) {
+                throw MigratorException::moreThanOneClassInVersionFile($versionFile->getBaseName());
+            }
+
+            $classFqn = reset($newClasses);
+
+            $version = new $classFqn();
 
             if (!$version instanceof VersionInterface) {
                 throw MigratorException::versionNotInstance($className);
