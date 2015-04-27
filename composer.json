@@ -26,5 +26,8 @@
         "psr-4": {
             "DTL\\PhpcrMigrations\\": "tests"
         }
+    },
+    "extra": {
+        "branch-alias": "1.0"
     }
 }
