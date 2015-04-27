@@ -21,7 +21,7 @@ class VersionFinderTest extends \PHPUnit_Framework_TestCase
     {
         $collection = $this->finder->getCollection();
         $this->assertInstanceOf(VersionCollection::class, $collection);
-        $versions = $collection->toArray();
+        $versions = $collection->getAllVersions();
         $this->assertCount(2, $versions);
     }
 

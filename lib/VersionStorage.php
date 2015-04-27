@@ -36,7 +36,8 @@ class VersionStorage
         if (!$nodeTypeManager->hasNodeType('phpcrMigration:version')) {
             $nodeTypeManager->registerNodeTypesCnd(<<<EOT
 <phpcrMigrations = 'http://www.danteech.com/phpcr-migrations'>
-[phpcrMigrations:version] > nt:base
+[phpcrMigrations:version] > nt:base, mix:created
+
 [phpcrMigrations:versions] > nt:base
 +* (phpcrMigrations:version)
 EOT
@@ -60,6 +61,11 @@ EOT
 
         $versions = $this->storageNode->getNodeNames();
         return $versions;
+    }
+
+    public function hasVersioningNode()
+    {
+        return $this->session->nodeExists('/' . $this->storageNodeName);
     }
 
     public function getCurrentVersion()
@@ -88,6 +94,6 @@ EOT
     {
         $this->init();
 
-        $this->storageNode->addNode($timestamp, 'phpcrMigrations:version');
+        $node = $this->storageNode->addNode($timestamp, 'phpcrMigrations:version');
     }
 }

@@ -136,6 +136,20 @@ class MigrationTest extends BaseTestCase
         $this->assertCount(0, $migratedVersions);
     }
 
+    /**
+     * It should add all migrations
+     */
+    public function testInitialize()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->getMigrator()->initialize();
+
+        $nodes = $this->session->getNode('/phpcrMigrations:versions')->getNodes();
+
+        $this->assertCount(2, $nodes);
+    }
+
     private function addVersion($version)
     {
         $this->filesystem->copy(

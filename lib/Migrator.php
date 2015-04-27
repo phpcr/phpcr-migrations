@@ -32,6 +32,23 @@ class Migrator
         $this->versionStorage = $versionStorage;
     }
 
+    /**
+     * Add all the migrations without running them.
+     * This should be executed on new database installations.
+     */
+    public function initialize()
+    {
+        if ($this->versionStorage->hasVersioningNode()) {
+            throw MigratorException::cannotInitializeAlreadyHasVersions();
+        }
+
+        foreach (array_keys($this->versionCollection->getAllVersions()) as $timestamp) {
+            $this->versionStorage->add($timestamp);
+        }
+
+        $this->session->save();
+    }
+
     public function migrate($to = null, OutputInterface $output)
     {
         if ($to === null) {
@@ -60,8 +77,11 @@ class Migrator
         }
 
         $start = microtime(true);
+        $position = 0;
+        $output->writeln(sprintf('<comment>%s</comment> %d version(s):', ($direction == 'up' ? 'Upgrading' : 'Reverting'), count($versionsToExecute)));
         foreach ($versionsToExecute as $timestamp => $version) {
-            $output->writeln('<info>Executing migration version</info>: %s', $timestamp);
+            $position++;
+            $output->writeln(sprintf(' %s [<info>%d/%d</info>]: %s', $direction == 'up' ? '+' : '-', $position, count($versionsToExecute), $timestamp));
             $version->$direction($this->session);
 
             if ($direction === 'down') {
@@ -70,14 +90,10 @@ class Migrator
                 $this->versionStorage->add($timestamp);
             }
 
+            $this->session->save();
         }
 
-        $this->session->save();
 
-        $output->writeln(sprintf(
-            '<info>Done. Executed </info>%s<info> migration versions</info> %s', 
-            count($versionsToExecute), number_format(microtime(true) - $start, 4)
-        ));
 
         return $versionsToExecute;
     }

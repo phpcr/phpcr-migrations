@@ -31,4 +31,9 @@ class MigratorException extends \Exception
     {
         return new self(sprintf('Version class "%s" is not an instance of DTL\PhpcrMigrations\VersionInterface', $className));
     }
+
+    public static function cannotInitializeAlreadyHasVersions()
+    {
+        return new self('Cannot initiaialize a content repository with previously existing migrations.');
+    }
 }

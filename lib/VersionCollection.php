@@ -25,7 +25,7 @@ class VersionCollection
         return isset($this->versions[$versionTimestamp]);
     }
 
-    public function toArray()
+    public function getAllVersions()
     {
         return $this->versions;
     }
