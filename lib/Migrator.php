@@ -49,6 +49,17 @@ class Migrator
         $this->session->save();
     }
 
+    /**
+     * Run the migration up (or down) until $to.
+     *
+     * If $to is 0 then all migrations will be reverted.
+     * If $to is null then all migrations will be executed.
+     *
+     * @param string $to Version to run until
+     * @param OutputInterface $output
+     *
+     * @return VersionInterface[] Executed migrations
+     */
     public function migrate($to = null, OutputInterface $output)
     {
         if ($to === null) {
@@ -94,5 +105,10 @@ class Migrator
         }
 
         return $versionsToExecute;
+    }
+
+    public function getVersions()
+    {
+        return $this->versionCollection;
     }
 }

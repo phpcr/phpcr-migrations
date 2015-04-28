@@ -18,7 +18,7 @@ class VersionStorage
     private $storageNodeName;
     private $initialized = false;
 
-    public function __construct(SessionInterface $session, $storageNodeName = 'phpcrMigrations:versions')
+    public function __construct(SessionInterface $session, $storageNodeName = 'jcr:versions')
     {
         $this->session = $session;
         $this->storageNodeName = $storageNodeName;
@@ -35,11 +35,11 @@ class VersionStorage
 
         if (!$nodeTypeManager->hasNodeType('phpcrMigration:version')) {
             $nodeTypeManager->registerNodeTypesCnd(<<<EOT
-<phpcrMigrations = 'http://www.danteech.com/phpcr-migrations'>
-[phpcrMigrations:version] > nt:base, mix:created
+<phpcrmig = 'http://www.danteech.com/phpcr-migrations'>
+[phpcrmig:version] > nt:base, mix:created
 
-[phpcrMigrations:versions] > nt:base
-+* (phpcrMigrations:version)
+[phpcrmig:versions] > nt:base
++* (phpcrmig:version)
 EOT
             , true);
         }
@@ -49,7 +49,7 @@ EOT
         if ($rootNode->hasNode($this->storageNodeName)) {
             $storageNode = $rootNode->getNode($this->storageNodeName);
         } else {
-            $storageNode = $rootNode->addNode($this->storageNodeName, 'phpcrMigrations:versions');
+            $storageNode = $rootNode->addNode($this->storageNodeName, 'phpcrmig:versions');
         }
 
         $this->storageNode = $storageNode;
@@ -94,6 +94,6 @@ EOT
     {
         $this->init();
 
-        $node = $this->storageNode->addNode($timestamp, 'phpcrMigrations:version');
+        $node = $this->storageNode->addNode($timestamp, 'phpcrmig:version');
     }
 }
