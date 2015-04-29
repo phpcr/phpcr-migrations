@@ -22,9 +22,9 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->version1 = $this->prophesize(VersionInterface::class);
-        $this->version2 = $this->prophesize(VersionInterface::class);
-        $this->version3 = $this->prophesize(VersionInterface::class);
+        $this->version1 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
+        $this->version2 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
+        $this->version3 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
     }
 
     /**

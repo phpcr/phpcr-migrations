@@ -31,7 +31,7 @@ class VersionFinderTest extends \PHPUnit_Framework_TestCase
     public function testGetCollection()
     {
         $collection = $this->finder->getCollection();
-        $this->assertInstanceOf(VersionCollection::class, $collection);
+        $this->assertInstanceOf('DTL\PhpcrMigrations\VersionCollection', $collection);
         $versions = $collection->getAllVersions();
         $this->assertCount(3, $versions);
     }

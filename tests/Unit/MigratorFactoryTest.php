@@ -22,10 +22,10 @@ class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $storage = $this->prophesize(VersionStorage::class);
-        $finder = $this->prophesize(VersionFinder::class);
-        $session = $this->prophesize(SessionInterface::class);
-        $finder->getCollection()->willReturn($this->prophesize(VersionCollection::class)->reveal());
+        $storage = $this->prophesize('DTL\PhpcrMigrations\VersionStorage');
+        $finder = $this->prophesize('DTL\PhpcrMigrations\VersionFinder');
+        $session = $this->prophesize('PHPCR\SessionInterface');
+        $finder->getCollection()->willReturn($this->prophesize('DTL\PhpcrMigrations\VersionCollection')->reveal());
 
         $factory = new MigratorFactory(
             $storage->reveal(),
@@ -33,6 +33,6 @@ class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
             $session->reveal()
         );
         $migrator = $factory->getMigrator();
-        $this->assertInstanceOf(Migrator::class, $migrator);
+        $this->assertInstanceOf('DTL\PhpcrMigrations\Migrator', $migrator);
     }
 }

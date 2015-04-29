@@ -60,7 +60,15 @@ EOT
     {
         $this->init();
 
-        $versions = $this->storageNode->getNodeNames();
+        $versionNodes = $this->storageNode->getNodes();
+        $versions = array();
+
+        foreach ($versionNodes as $versionNode) {
+            $versions[$versionNode->getName()] = array(
+                'name' => $versionNode->getName(),
+                'executed' => $versionNode->getPropertyValue('jcr:created'),
+            );
+        }
 
         return $versions;
     }
