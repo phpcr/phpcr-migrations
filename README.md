@@ -2,13 +2,13 @@ PHPCR Migrations
 ================
 
 [![Build
-Status](https://travis-ci.org/dantleech/phpcr-migrations.svg?branch=master)](https://travis-ci.org/dantleech/phpcr-migrations)
+Status](https://travis-ci.org/phpcr/phpcr-migrations.svg?branch=master)](https://travis-ci.org/phpcr/phpcr-migrations)
 
 Migrations library for PHPCR influenced by [Doctrine
 migrations](https://github.com/doctrine/migrations).
 
 For integration with Symfony see the [PHPCR Migrations
-Bundle](https://github.com/dantleech/phpcr-migrations-bundle).
+Bundle](https://github.com/phpcr/phpcr-migrations-bundle).
 
 Usage
 -----
@@ -32,8 +32,43 @@ $output = new NullOutput();
 $migrator->migrate($to, $output);
 ````
 
-Versions
---------
+You may also create a factory class (useful when you use dependency
+injection):
+
+````
+<?php
+
+$factory = new MigratorFactory($storage, $finder, $session);
+$migrator = $factory->getMigrator();
+````
+
+### Initializing
+
+When you install a project for the first time you need to initialize the
+versions:
+
+````
+<?php
+
+$migrator->initialize();
+````
+
+This should be part of your build process and it will add all the versions to
+the migration version node in the content repository.
+
+### Migrating
+
+
+```php
+$migrator->migrate('201501011200', $output); // migrate to a specific version
+$migrator->migrate('up', $output); // migrate up a version
+$migrator->migrate('down', $output); // migrate down a version
+$migrator->migrate('top', $output); // migrate to the latest version
+$migrator->migrate('bottom', $output); // revert all versions
+````
+
+Version classes
+---------------
 
 Version classes contain `up` and `down` methods. The class is quite simple:
 
@@ -58,3 +93,6 @@ class Version201504241200 implements VersionInterface
 
 They must be named `VersionYYYMMDDHHMM`. If they are not so named, then they
 will not be detected.
+
+The `down` method should revert any changes made in the `up` method. Always
+check that revcerting your migration works.
