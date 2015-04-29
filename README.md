@@ -1,6 +1,9 @@
 PHPCR Migrations
 ================
 
+[![Build
+Status](https://travis-ci.org/dantleech/phpcr-migrations.svg?branch=master)](https://travis-ci.org/dantleech/phpcr-migrations)
+
 Migrations library for PHPCR influenced by [Doctrine
 migrations](https://github.com/doctrine/migrations).
 
