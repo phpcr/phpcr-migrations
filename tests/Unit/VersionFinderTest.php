@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations\tests\Unit;
+namespace PHPCR\Migrations\tests\Unit;
 
-use DTL\PhpcrMigrations\VersionCollection;
-use DTL\PhpcrMigrations\VersionFinder;
+use PHPCR\Migrations\VersionCollection;
+use PHPCR\Migrations\VersionFinder;
 
 class VersionFinderTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +31,7 @@ class VersionFinderTest extends \PHPUnit_Framework_TestCase
     public function testGetCollection()
     {
         $collection = $this->finder->getCollection();
-        $this->assertInstanceOf('DTL\PhpcrMigrations\VersionCollection', $collection);
+        $this->assertInstanceOf('PHPCR\Migrations\VersionCollection', $collection);
         $versions = $collection->getAllVersions();
         $this->assertCount(3, $versions);
     }

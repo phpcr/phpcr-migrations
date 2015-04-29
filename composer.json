@@ -1,5 +1,5 @@
 {
-    "name": "dantleech/phpcr-migrations",
+    "name": "phpcr/phpcr-migrations",
     "description": "Migrations for PHPCR",
     "license": "MIT",
     "authors": [
@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DTL\\PhpcrMigrations\\": "lib"
+            "PHPCR\\Migrations\\": "lib"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DTL\\PhpcrMigrations\\": "tests"
+            "PHPCR\\Migrations\\": "tests"
         }
     },
     "extra": {

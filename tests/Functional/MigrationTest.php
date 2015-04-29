@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations\tests\Functional;
+namespace PHPCR\Migrations\tests\Functional;
 
-use DTL\PhpcrMigrations\BaseTestCase;
-use DTL\PhpcrMigrations\Migrator;
-use DTL\PhpcrMigrations\VersionFinder;
-use DTL\PhpcrMigrations\VersionStorage;
+use PHPCR\Migrations\BaseTestCase;
+use PHPCR\Migrations\Migrator;
+use PHPCR\Migrations\VersionFinder;
+use PHPCR\Migrations\VersionStorage;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 

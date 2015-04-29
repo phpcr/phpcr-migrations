@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations;
+namespace PHPCR\Migrations;
 
-use DTL\PhpcrMigrations\Exception\MigratorException;
+use PHPCR\Migrations\Exception\MigratorException;
 use PHPCR\SessionInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

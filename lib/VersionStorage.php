@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations;
+namespace PHPCR\Migrations;
 
 use PHPCR\SessionInterface;
 

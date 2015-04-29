@@ -17,9 +17,9 @@ Usage
 <?php
 
 use Symfony\Component\Console\Output\NullOutput;
-use DTL\PhpcrMigrations\VersionStorage;
-use DTL\PhpcrMigrations\VersionFinder;
-use DTL\PhpcrMigrations\Migrator;
+use PHPCR\Migrations\VersionStorage;
+use PHPCR\Migrations\VersionFinder;
+use PHPCR\Migrations\Migrator;
 
 $storage = new VersionStorage($phpcrSession);
 $finder = new VersionFinder(array('/path/to/migrations'));
@@ -40,7 +40,7 @@ Version classes contain `up` and `down` methods. The class is quite simple:
 ````php
 <?php
 
-use DTL\PhpcrMigrations\VersionInterface;
+use PHPCR\Migrations\VersionInterface;
 
 class Version201504241200 implements VersionInterface
 {

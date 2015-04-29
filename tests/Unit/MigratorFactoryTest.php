@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations\tests\Unit;
+namespace PHPCR\Migrations\tests\Unit;
 
-use DTL\PhpcrMigrations\Migrator;
-use DTL\PhpcrMigrations\MigratorFactory;
-use DTL\PhpcrMigrations\VersionCollection;
-use DTL\PhpcrMigrations\VersionFinder;
-use DTL\PhpcrMigrations\VersionStorage;
+use PHPCR\Migrations\Migrator;
+use PHPCR\Migrations\MigratorFactory;
+use PHPCR\Migrations\VersionCollection;
+use PHPCR\Migrations\VersionFinder;
+use PHPCR\Migrations\VersionStorage;
 use PHPCR\SessionInterface;
 
 class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $storage = $this->prophesize('DTL\PhpcrMigrations\VersionStorage');
-        $finder = $this->prophesize('DTL\PhpcrMigrations\VersionFinder');
+        $storage = $this->prophesize('PHPCR\Migrations\VersionStorage');
+        $finder = $this->prophesize('PHPCR\Migrations\VersionFinder');
         $session = $this->prophesize('PHPCR\SessionInterface');
-        $finder->getCollection()->willReturn($this->prophesize('DTL\PhpcrMigrations\VersionCollection')->reveal());
+        $finder->getCollection()->willReturn($this->prophesize('PHPCR\Migrations\VersionCollection')->reveal());
 
         $factory = new MigratorFactory(
             $storage->reveal(),
@@ -33,6 +33,6 @@ class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
             $session->reveal()
         );
         $migrator = $factory->getMigrator();
-        $this->assertInstanceOf('DTL\PhpcrMigrations\Migrator', $migrator);
+        $this->assertInstanceOf('PHPCR\Migrations\Migrator', $migrator);
     }
 }

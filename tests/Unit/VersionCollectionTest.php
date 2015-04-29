@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace DTL\PhpcrMigrations\tests\Unit;
+namespace PHPCR\Migrations\tests\Unit;
 
-use DTL\PhpcrMigrations\VersionCollection;
-use DTL\PhpcrMigrations\VersionInterface;
+use PHPCR\Migrations\VersionCollection;
+use PHPCR\Migrations\VersionInterface;
 
 class VersionCollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,9 +22,9 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->version1 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
-        $this->version2 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
-        $this->version3 = $this->prophesize('DTL\PhpcrMigrations\VersionInterface');
+        $this->version1 = $this->prophesize('PHPCR\Migrations\VersionInterface');
+        $this->version2 = $this->prophesize('PHPCR\Migrations\VersionInterface');
+        $this->version3 = $this->prophesize('PHPCR\Migrations\VersionInterface');
     }
 
     /**
