@@ -64,8 +64,6 @@ class Migrator
     {
         if ($to === null) {
             $to = $this->versionCollection->getLatestVersion();
-        } else {
-            $to = 'V' . $to;
         }
 
         if (false === $to) {
@@ -109,6 +107,6 @@ class Migrator
 
     public function getVersions()
     {
-        return $this->versionCollection;
+        return $this->versionCollection->getAllVersions();
     }
 }

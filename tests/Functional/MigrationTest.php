@@ -50,12 +50,12 @@ class MigrationTest extends BaseTestCase
         $this->assertTrue($this->session->nodeExists('/hello/world'));
         $this->assertTrue($this->session->nodeExists('/hello/dan'));
 
-        $nodes = $this->session->getNode('/phpcrMigrations:versions')->getNodes();
+        $nodes = $this->session->getNode('/phpcrmig:versions')->getNodes();
         $names = array_keys((array) $nodes);
 
-        $this->assertContains('V201501011200', $names);
-        $this->assertContains('V201501011212', $names);
-        $this->assertContains('V201501011215', $names);
+        $this->assertContains('201501011200', $names);
+        $this->assertContains('201501011212', $names);
+        $this->assertContains('201501011215', $names);
     }
 
     /**
@@ -106,10 +106,10 @@ class MigrationTest extends BaseTestCase
         // migrate down one version
         $migratedVersions = $this->getMigrator()->migrate(self::VERSION2, $this->output);
         $this->assertCount(1, $migratedVersions);
-        $nodes = $this->session->getNode('/phpcrMigrations:versions')->getNodes();
+        $nodes = $this->session->getNode('/phpcrmig:versions')->getNodes();
         $names = array_keys((array) $nodes);
         $this->assertCount(2, $names);
-        $this->assertNotContains('V' . self::VERSION3, $names);
+        $this->assertNotContains(self::VERSION3, $names);
 
         $this->assertFalse($this->session->nodeExists('/hello/dan'));
 
@@ -145,7 +145,7 @@ class MigrationTest extends BaseTestCase
         $this->addVersion(self::VERSION2);
         $this->getMigrator()->initialize();
 
-        $nodes = $this->session->getNode('/phpcrMigrations:versions')->getNodes();
+        $nodes = $this->session->getNode('/phpcrmig:versions')->getNodes();
 
         $this->assertCount(2, $nodes);
     }

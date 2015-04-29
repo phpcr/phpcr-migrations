@@ -18,7 +18,7 @@ class VersionStorage
     private $storageNodeName;
     private $initialized = false;
 
-    public function __construct(SessionInterface $session, $storageNodeName = 'jcr:versions')
+    public function __construct(SessionInterface $session, $storageNodeName = 'phpcrmig:versions')
     {
         $this->session = $session;
         $this->storageNodeName = $storageNodeName;
@@ -33,7 +33,7 @@ class VersionStorage
         $this->workspace = $this->session->getWorkspace();
         $nodeTypeManager = $this->workspace->getNodeTypeManager();
 
-        if (!$nodeTypeManager->hasNodeType('phpcrMigration:version')) {
+        if (!$nodeTypeManager->hasNodeType('phpcrmig:version')) {
             $nodeTypeManager->registerNodeTypesCnd(<<<EOT
 <phpcrmig = 'http://www.danteech.com/phpcr-migrations'>
 [phpcrmig:version] > nt:base, mix:created

@@ -11,10 +11,12 @@
 namespace DTL\PhpcrMigrations;
 
 use Symfony\Component\Finder\Finder;
+use DTL\PhpcrMigrations\Util;
 
 class VersionFinder
 {
     private $paths;
+    private $collection;
 
     public function __construct(array $paths)
     {
@@ -23,6 +25,10 @@ class VersionFinder
 
     public function getCollection()
     {
+        if ($this->collection) {
+            return $this->collection;
+        }
+
         $versions = array();
         $finder = new Finder();
         $finder->name('/Version[0-9]{12}.php/');
@@ -34,19 +40,8 @@ class VersionFinder
 
         foreach ($finder as $versionFile) {
             $className = $versionFile->getBasename('.php');
-            $declaredClasses = get_declared_classes();
             require_once($versionFile->getRealPath());
-            $newClasses = array_diff(get_declared_classes(), $declaredClasses);
-
-            if (count($newClasses) === 0) {
-                throw MigratorException::noClassesInVersionFile($versionFile->getBaseName());
-            }
-
-            if (count($newClasses) !== 1) {
-                throw MigratorException::moreThanOneClassInVersionFile($versionFile->getBaseName());
-            }
-
-            $classFqn = reset($newClasses);
+            $classFqn = Util::getClassNameFromFile($versionFile->getRealPath());
 
             $version = new $classFqn();
 
@@ -55,11 +50,11 @@ class VersionFinder
             }
 
             $versionTimestamp = substr($versionFile->getBaseName(), 7, 12);
-            $versions['V'.$versionTimestamp] = $version;
+            $versions[$versionTimestamp] = $version;
         }
 
-        $collection = new VersionCollection($versions);
+        $this->collection = new VersionCollection($versions);
 
-        return $collection;
+        return $this->collection;
     }
 }

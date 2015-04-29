@@ -85,6 +85,6 @@ class VersionCollection
 
     private function normalizeTs($ts)
     {
-        return $ts ? 'V' . $ts : null;
+        return $ts ? $ts : null;
     }
 }
