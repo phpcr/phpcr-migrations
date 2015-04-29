@@ -1,12 +1,4 @@
 <?php
-/*
- * This file is part of the <package> package.
- *
- * (c) Daniel Leech <daniel@dantleech.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace DTL\PhpcrMigrations;
 
@@ -60,6 +52,7 @@ EOT
         $this->init();
 
         $versions = $this->storageNode->getNodeNames();
+
         return $versions;
     }
 
@@ -75,9 +68,9 @@ EOT
         $versions = (array) $this->storageNode->getNodeNames();
 
         if (!$versions) {
-            return null;
+            return;
         }
-        
+
         asort($versions);
 
         return end($versions);

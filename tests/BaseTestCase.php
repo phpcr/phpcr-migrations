@@ -3,8 +3,8 @@
 namespace DTL\PhpcrMigrations;
 
 use Jackalope\RepositoryFactoryFilesystem;
-use Symfony\Component\Filesystem\Filesystem;
 use PHPCR\SimpleCredentials;
+use Symfony\Component\Filesystem\Filesystem;
 
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {

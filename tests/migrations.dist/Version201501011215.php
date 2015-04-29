@@ -1,7 +1,7 @@
 <?php
 
-use PHPCR\SessionInterface;
 use DTL\PhpcrMigrations\VersionInterface;
+use PHPCR\SessionInterface;
 
 class Version201501011215 implements VersionInterface
 {

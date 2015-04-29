@@ -1,17 +1,8 @@
 <?php
-/*
- * This file is part of the <package> package.
- *
- * (c) Daniel Leech <daniel@dantleech.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace DTL\PhpcrMigrations;
 
 use Symfony\Component\Finder\Finder;
-use DTL\PhpcrMigrations\Util;
 
 class VersionFinder
 {
@@ -40,13 +31,16 @@ class VersionFinder
 
         foreach ($finder as $versionFile) {
             $className = $versionFile->getBasename('.php');
-            require_once($versionFile->getRealPath());
-            $classFqn = Util::getClassNameFromFile($versionFile->getRealPath());
+            require_once $versionFile->getRealPath();
+            $classFqn = MigratorUtil::getClassNameFromFile($versionFile->getRealPath());
 
             $version = new $classFqn();
 
             if (!$version instanceof VersionInterface) {
-                throw MigratorException::versionNotInstance($className);
+                throw new MigratorException(sprintf(
+                    'Version class "%s" must implement VersionInterface',
+                    $className
+                ));
             }
 
             $versionTimestamp = substr($versionFile->getBaseName(), 7, 12);

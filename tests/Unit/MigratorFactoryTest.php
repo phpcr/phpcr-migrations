@@ -1,13 +1,12 @@
 <?php
 
-namespace DTL\PhpcrMigrations\Tests\Unit;
+namespace DTL\PhpcrMigrations\tests\Unit;
 
-use DTL\PhpcrMigrations\VersionFinder;
-use DTL\PhpcrMigrations\VersionCollection;
-use DTL\PhpcrMigrations\VersionInterface;
-use DTL\PhpcrMigrations\VersionStorage;
 use DTL\PhpcrMigrations\Migrator;
 use DTL\PhpcrMigrations\MigratorFactory;
+use DTL\PhpcrMigrations\VersionCollection;
+use DTL\PhpcrMigrations\VersionFinder;
+use DTL\PhpcrMigrations\VersionStorage;
 use PHPCR\SessionInterface;
 
 class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +19,7 @@ class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
         $finder->getCollection()->willReturn($this->prophesize(VersionCollection::class)->reveal());
 
         $factory = new MigratorFactory(
-            $storage->reveal(), 
+            $storage->reveal(),
             $finder->reveal(),
             $session->reveal()
         );
@@ -28,4 +27,3 @@ class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Migrator::class, $migrator);
     }
 }
-

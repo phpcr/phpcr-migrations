@@ -1,18 +1,9 @@
 <?php
-/*
- * This file is part of the <package> package.
- *
- * (c) Daniel Leech <daniel@dantleech.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace DTL\PhpcrMigrations;
 
+use DTL\PhpcrMigrations\Exception\MigratorException;
 use PHPCR\SessionInterface;
-use DTL\PhpcrMigrations\VersionStorage;
-use DTL\PhpcrMigrations\VersionCollection;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Migrator
@@ -20,13 +11,15 @@ class Migrator
     private $session;
     private $versionCollection;
     private $versionStorage;
+    private $actions = array(
+        'up', 'down', 'top', 'bottom',
+    );
 
     public function __construct(
         SessionInterface $session,
         VersionCollection $versionCollection,
         VersionStorage $versionStorage
-    )
-    {
+    ) {
         $this->session = $session;
         $this->versionCollection = $versionCollection;
         $this->versionStorage = $versionStorage;
@@ -39,7 +32,7 @@ class Migrator
     public function initialize()
     {
         if ($this->versionStorage->hasVersioningNode()) {
-            throw MigratorException::cannotInitializeAlreadyHasVersions();
+            throw MigratorException('Will not re-initialize');
         }
 
         foreach (array_keys($this->versionCollection->getAllVersions()) as $timestamp) {
@@ -62,21 +55,13 @@ class Migrator
      */
     public function migrate($to = null, OutputInterface $output)
     {
-        if ($to === null) {
-            $to = $this->versionCollection->getLatestVersion();
-        }
-
         if (false === $to) {
             return array();
         }
 
-        $to = (string) $to;
-
-        if ($to !== 'V0' && !$this->versionCollection->has($to)) {
-            throw MigratorException::unknownVersion($to);
-        }
-
         $from = $this->versionStorage->getCurrentVersion();
+        $to = $this->resolveTo($to, $from);
+
         $direction = $from > $to ? 'down' : 'up';
 
         $versionsToExecute = $this->versionCollection->getVersions($from, $to, $direction);
@@ -108,5 +93,52 @@ class Migrator
     public function getVersions()
     {
         return $this->versionCollection->getAllVersions();
+    }
+
+    /**
+     * Resolve the "to" version.
+     *
+     * @param string $to
+     * @param string $from
+     *
+     * @return string
+     */
+    private function resolveTo($to, $from)
+    {
+        if (is_string($to)) {
+            $to = strtolower($to);
+        }
+
+        if ($to === 'down') {
+            $to = $this->versionCollection->getPreviousVersion($from);
+        }
+
+        if ($to === 'up') {
+            $to = $this->versionCollection->getNextVersion($from);
+        }
+
+        if ($to === 'bottom') {
+            $to = 0;
+        }
+
+        if ($to === 'top' || null === $to) {
+            $to = $this->versionCollection->getLatestVersion();
+        }
+
+        if (0 !== $to && false === strtotime($to)) {
+            throw new MigratorException(sprintf(
+                'Unknown migration action "%s". Known actions: "%s"',
+                $to,
+                implode('", "', $this->actions)
+            ));
+        }
+
+        if (0 !== $to && !$this->versionCollection->has($to)) {
+            throw new MigratorException(sprintf(
+                'Unknown version "%s"', $to
+            ));
+        }
+
+        return $to;
     }
 }

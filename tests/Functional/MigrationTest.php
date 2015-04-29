@@ -1,11 +1,11 @@
 <?php
 
-namespace DTL\PhpcrMigrations\Tests\Functional;
+namespace DTL\PhpcrMigrations\tests\Functional;
 
-use DTL\PhpcrMigrations\VersionStorage;
-use DTL\PhpcrMigrations\VersionFinder;
-use DTL\PhpcrMigrations\Migrator;
 use DTL\PhpcrMigrations\BaseTestCase;
+use DTL\PhpcrMigrations\Migrator;
+use DTL\PhpcrMigrations\VersionFinder;
+use DTL\PhpcrMigrations\VersionStorage;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -15,10 +15,10 @@ class MigrationTest extends BaseTestCase
     const VERSION2 = '201501011212';
     const VERSION3 = '201501011215';
 
-    private $migrator;
     private $output;
     private $filesystem;
     private $migrationDir;
+    private $storage;
 
     public function setUp()
     {
@@ -36,7 +36,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should execute all the migrations and populate the versions table
+     * It should execute all the migrations and populate the versions table.
      */
     public function testMigration()
     {
@@ -59,7 +59,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should not run migrations that have already been executed
+     * It should not run migrations that have already been executed.
      */
     public function testMigrateAgain()
     {
@@ -75,7 +75,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should run new migrations
+     * It should run new migrations.
      */
     public function testMigrateAdd()
     {
@@ -92,7 +92,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should run migrations backwards
+     * It should run migrations backwards.
      */
     public function testMigrateDown()
     {
@@ -123,7 +123,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should do nothing if target version is current version
+     * It should do nothing if target version is current version.
      */
     public function testMigrateToCurrentVersionFromCurrent()
     {
@@ -137,7 +137,7 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
-     * It should add all migrations
+     * It should add all migrations.
      */
     public function testInitialize()
     {
@@ -150,6 +150,74 @@ class MigrationTest extends BaseTestCase
         $this->assertCount(2, $nodes);
     }
 
+    /**
+     * It should migrate to the next version.
+     */
+    public function testMigrateNext()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->addVersion(self::VERSION3);
+        $migratedVersions = $this->getMigrator()->migrate('up', $this->output);
+        $this->assertCount(1, $migratedVersions);
+        $this->assertEquals(self::VERSION1, $this->storage->getCurrentVersion());
+
+        $migratedVersions = $this->getMigrator()->migrate('up', $this->output);
+        $this->assertCount(1, $migratedVersions);
+        $this->assertEquals(self::VERSION2, $this->storage->getCurrentVersion());
+    }
+
+    /**
+     * It should migrate to the previous version.
+     */
+    public function testMigratePrevious()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->addVersion(self::VERSION3);
+        $migratedVersions = $this->getMigrator()->migrate(null, $this->output);
+        $this->assertEquals(self::VERSION3, $this->storage->getCurrentVersion());
+
+        $migratedVersions = $this->getMigrator()->migrate('down', $this->output);
+        $this->assertCount(1, $migratedVersions);
+        $this->assertEquals(self::VERSION2, $this->storage->getCurrentVersion());
+
+        $migratedVersions = $this->getMigrator()->migrate('down', $this->output);
+        $this->assertCount(1, $migratedVersions);
+        $this->assertEquals(self::VERSION1, $this->storage->getCurrentVersion());
+
+        $migratedVersions = $this->getMigrator()->migrate('down', $this->output);
+        $this->assertCount(1, $migratedVersions);
+
+        $migratedVersions = $this->getMigrator()->migrate('down', $this->output);
+        $this->assertCount(0, $migratedVersions);
+    }
+
+    /**
+     * It should migrate to the top.
+     */
+    public function testMigrateTop()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->addVersion(self::VERSION3);
+        $migratedVersions = $this->getMigrator()->migrate('top', $this->output);
+        $this->assertCount(3, $migratedVersions);
+    }
+
+    /**
+     * It should migrate to the bottom.
+     */
+    public function testMigrateBottom()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->addVersion(self::VERSION3);
+        $this->getMigrator()->migrate('top', $this->output);
+        $migratedVersions = $this->getMigrator()->migrate('bottom', $this->output);
+        $this->assertCount(3, $migratedVersions);
+    }
+
     private function addVersion($version)
     {
         $this->filesystem->copy(
@@ -160,10 +228,10 @@ class MigrationTest extends BaseTestCase
 
     private function getMigrator()
     {
-        $storage = new VersionStorage($this->session);
+        $this->storage = new VersionStorage($this->session);
         $finder = new VersionFinder(array($this->migrationDir));
         $versions = $finder->getCollection();
-        $migrator = new Migrator($this->session, $versions, $storage);
+        $migrator = new Migrator($this->session, $versions, $this->storage);
 
         return $migrator;
     }

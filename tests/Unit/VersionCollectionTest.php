@@ -1,8 +1,7 @@
 <?php
 
-namespace DTL\PhpcrMigrations\Tests\Unit;
+namespace DTL\PhpcrMigrations\tests\Unit;
 
-use DTL\PhpcrMigrations\VersionFinder;
 use DTL\PhpcrMigrations\VersionCollection;
 use DTL\PhpcrMigrations\VersionInterface;
 
@@ -20,7 +19,7 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It knows if it contains a version
+     * It knows if it contains a version.
      */
     public function testHas()
     {
@@ -34,7 +33,7 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It returns the versions required to migrate from up from A to B
+     * It returns the versions required to migrate from up from A to B.
      */
     public function testFromAToBUp()
     {
@@ -47,12 +46,12 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
         $versions = $collection->getVersions(self::VERSION1, self::VERSION3);
 
         $this->assertEquals(array(
-            self::VERSION2, self::VERSION3
+            self::VERSION2, self::VERSION3,
         ), array_map('strval', array_keys($versions)));
     }
 
     /**
-     * It returns the versions required to migrate down from A to B
+     * It returns the versions required to migrate down from A to B.
      */
     public function testDownFromAToBUp()
     {
@@ -65,7 +64,7 @@ class VersionCollectionTest extends \PHPUnit_Framework_TestCase
         $versions = $collection->getVersions(self::VERSION3, self::VERSION1);
 
         $this->assertEquals(array(
-            self::VERSION3, self::VERSION2
+            self::VERSION3, self::VERSION2,
         ), array_map('strval', array_keys($versions)));
     }
 

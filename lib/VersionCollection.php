@@ -1,12 +1,4 @@
 <?php
-/*
- * This file is part of the <package> package.
- *
- * (c) Daniel Leech <daniel@dantleech.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace DTL\PhpcrMigrations;
 
@@ -30,7 +22,7 @@ class VersionCollection
         return $this->versions;
     }
 
-    public function getVersions($from, $to) 
+    public function getVersions($from, $to)
     {
         $direction = $from > $to ? 'down' : 'up';
         $result = array();
@@ -69,10 +61,8 @@ class VersionCollection
                 break;
             }
 
-
             $result[$timestamp] = $version;
         }
-
 
         return $result;
     }
@@ -80,7 +70,52 @@ class VersionCollection
     public function getLatestVersion()
     {
         end($this->versions);
+
         return key($this->versions);
+    }
+
+    /**
+     * Return the version after the given version.
+     *
+     * @param string $from
+     */
+    public function getNextVersion($from)
+    {
+        $found = false;
+        foreach (array_keys($this->versions) as $timestamp) {
+            if ($from === null) {
+                return $timestamp;
+            }
+
+            if ($timestamp == $from) {
+                $found = true;
+                continue;
+            }
+
+            if ($found) {
+                return $timestamp;
+            }
+        }
+
+        return;
+    }
+
+    /**
+     * Return the version before the given version.
+     *
+     * @param string $from
+     */
+    public function getPreviousVersion($from)
+    {
+        $lastTimestamp = 0;
+        foreach (array_keys($this->versions) as $timestamp) {
+            if ($timestamp == $from) {
+                return $lastTimestamp;
+            }
+            $lastTimestamp = $timestamp;
+        }
+
+        return 0;
     }
 
     private function normalizeTs($ts)
