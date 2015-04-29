@@ -67,6 +67,24 @@ $migrator->migrate('top', $output); // migrate to the latest version
 $migrator->migrate('bottom', $output); // revert all versions
 ````
 
+### Listing versions
+
+You can access information about available versions from the
+`VersionCollection` object:
+
+
+````php
+$versionCollection->getAllVersions();
+````
+
+### Determining the current version
+
+You can determine the current version from the `VersionStorage` object:
+
+````php
+$versionStroage->getCurrentVersion();
+````
+
 Version classes
 ---------------
 
