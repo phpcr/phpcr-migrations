@@ -34,8 +34,11 @@ class MigratorUtil
                 break;
             }
 
-            $buffer .= fread($fp, 512);
-            $tokens = token_get_all($buffer);
+            // Read entire lines to prevent keyword truncation
+            for ($line = 0; $line <= 20; $line++) {
+                $buffer .= fgets($fp);
+            }
+            $tokens = @token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {
                 continue;
