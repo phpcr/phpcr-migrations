@@ -20,6 +20,11 @@ class VersionFinder
 
     public function __construct(array $paths)
     {
+        if (empty($paths)) {
+            throw new \RuntimeException(
+                'No paths were provided to the version finder.'
+            );
+        }
         $this->paths = $paths;
     }
 
