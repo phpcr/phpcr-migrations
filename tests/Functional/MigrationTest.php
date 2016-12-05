@@ -160,6 +160,20 @@ class MigrationTest extends BaseTestCase
     }
 
     /**
+     * It should throw an exception if trying to reiniitialize.
+     *
+     * @expectedException PHPCR\Migrations\Exception\MigratorException
+     * @expectedExceptionMessage Will not re-initialize
+     */
+    public function testReinitialize()
+    {
+        $this->addVersion(self::VERSION1);
+        $this->addVersion(self::VERSION2);
+        $this->getMigrator()->initialize();
+        $this->getMigrator()->initialize();
+    }
+
+    /**
      * It should migrate to the next version.
      */
     public function testMigrateNext()

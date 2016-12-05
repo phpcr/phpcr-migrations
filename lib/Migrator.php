@@ -41,7 +41,7 @@ class Migrator
     public function initialize()
     {
         if ($this->versionStorage->hasVersioningNode()) {
-            throw MigratorException('Will not re-initialize');
+            throw new MigratorException('This repository has already been initialized. Will not re-initialize.');
         }
 
         foreach (array_keys($this->versionCollection->getAllVersions()) as $timestamp) {
