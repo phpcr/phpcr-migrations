@@ -35,4 +35,16 @@ class VersionFinderTest extends \PHPUnit_Framework_TestCase
         $versions = $collection->getAllVersions();
         $this->assertCount(3, $versions);
     }
+
+    /**
+     * It should do nothing if no migrations paths are given.
+     *
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage No paths were provided
+     */
+    public function testNoMigrationPaths()
+    {
+        $collection = (new VersionFinder(array()))->getCollection();
+        $versions = $collection->getAllVersions();
+    }
 }
