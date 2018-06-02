@@ -2,14 +2,21 @@ language: php
 
 php:
   - 5.6
-  - 7.0
+  - 7.1
 
-before_script:
-  - composer install
+env:
+  - PACKAGE_VERSION=high
 
-script: phpunit
+sudo: false
 
 matrix:
-  allow_failures:
-    - env: SYMFONY_VERSION=dev-master
+  include:
+    - php: 5.6
+      env: PACKAGE_VERSION=low
 
+before_script:
+  - composer selfupdate
+  - if [[ "$PACKAGE_VERSION" == "high" ]]; then composer update --prefer-dist; fi
+  - if [[ "$PACKAGE_VERSION" == "low" ]]; then composer update --prefer-lowest --prefer-dist; fi
+
+script: vendor/bin/phpunit
