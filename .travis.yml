@@ -26,4 +26,4 @@ before_script:
   - if [[ "$PACKAGE_VERSION" == "high" ]]; then composer update --prefer-dist; fi
   - if [[ "$PACKAGE_VERSION" == "low" ]]; then composer update --prefer-lowest --prefer-dist; fi
 
-script: vendor/bin/phpunit
+script: vendor/bin/simple-phpunit
