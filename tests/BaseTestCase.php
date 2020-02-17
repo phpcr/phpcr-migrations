@@ -13,9 +13,10 @@ namespace PHPCR\Migrations;
 
 use Jackalope\RepositoryFactoryFilesystem;
 use PHPCR\SimpleCredentials;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     protected $session;
 

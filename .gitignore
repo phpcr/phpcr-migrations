@@ -2,3 +2,4 @@ composer.lock
 vendor
 tests/data
 tests/migrations
+.phpunit.result.cache
