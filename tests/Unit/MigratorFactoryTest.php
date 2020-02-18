@@ -17,8 +17,9 @@ use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\VersionStorage;
 use PHPCR\SessionInterface;
+use PHPUnit\Framework\TestCase;
 
-class MigratorFactoryTest extends \PHPUnit_Framework_TestCase
+class MigratorFactoryTest extends TestCase
 {
     public function testFactory()
     {

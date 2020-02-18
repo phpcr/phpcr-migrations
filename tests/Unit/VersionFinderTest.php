@@ -13,8 +13,9 @@ namespace PHPCR\Migrations\tests\Unit;
 
 use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionFinder;
+use PHPUnit\Framework\TestCase;
 
-class VersionFinderTest extends \PHPUnit_Framework_TestCase
+class VersionFinderTest extends TestCase
 {
     public function setUp()
     {
@@ -38,13 +39,11 @@ class VersionFinderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should do nothing if no migrations paths are given.
-     *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage No paths were provided
      */
     public function testNoMigrationPaths()
     {
-        $collection = (new VersionFinder(array()))->getCollection();
-        $versions = $collection->getAllVersions();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No paths were provided');
+        $versionFinder = new VersionFinder(array());
     }
 }
