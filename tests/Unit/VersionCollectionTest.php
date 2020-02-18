@@ -13,8 +13,9 @@ namespace PHPCR\Migrations\tests\Unit;
 
 use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionInterface;
+use PHPUnit\Framework\TestCase;
 
-class VersionCollectionTest extends \PHPUnit_Framework_TestCase
+class VersionCollectionTest extends TestCase
 {
     const VERSION1 = '201501010000';
     const VERSION2 = '201501020000';

@@ -3,6 +3,8 @@ language: php
 php:
   - 5.6
   - 7.1
+  - 7.2
+  - 7.3
 
 env:
   - PACKAGE_VERSION=high
@@ -13,10 +15,15 @@ matrix:
   include:
     - php: 5.6
       env: PACKAGE_VERSION=low
+    - php: 7.4
+      env:
+          - MINIMUM_STABILITY=dev
+          - PACKAGE_VERSION=high
 
 before_script:
   - composer selfupdate
+  - if [[ "$MINIMUM_STABILITY" ]]; then composer config minimum-stability $MINIMUM_STABILITY ; fi
   - if [[ "$PACKAGE_VERSION" == "high" ]]; then composer update --prefer-dist; fi
   - if [[ "$PACKAGE_VERSION" == "low" ]]; then composer update --prefer-lowest --prefer-dist; fi
 
-script: vendor/bin/phpunit
+script: vendor/bin/simple-phpunit

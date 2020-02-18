@@ -12,8 +12,9 @@
 namespace PHPCR\Migrations\tests\Unit;
 
 use PHPCR\Migrations\MigratorUtil;
+use PHPUnit\Framework\TestCase;
 
-class MigratorUtilTest extends \PHPUnit_Framework_TestCase
+class MigratorUtilTest extends TestCase
 {
     /**
      * It should return the classname of a file.

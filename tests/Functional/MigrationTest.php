@@ -12,6 +12,7 @@
 namespace PHPCR\Migrations\tests\Functional;
 
 use PHPCR\Migrations\BaseTestCase;
+use PHPCR\Migrations\Exception\MigratorException;
 use PHPCR\Migrations\Migrator;
 use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\VersionStorage;
@@ -161,15 +162,16 @@ class MigrationTest extends BaseTestCase
 
     /**
      * It should throw an exception if trying to reiniitialize.
-     *
-     * @expectedException PHPCR\Migrations\Exception\MigratorException
-     * @expectedExceptionMessage Will not re-initialize
      */
     public function testReinitialize()
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
+
         $this->getMigrator()->initialize();
+
+        $this->expectException(MigratorException::class);
+        $this->expectExceptionMessage('Will not re-initialize');
         $this->getMigrator()->initialize();
     }
 
