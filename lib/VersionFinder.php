@@ -11,6 +11,7 @@
 
 namespace PHPCR\Migrations;
 
+use PHPCR\Migrations\Exception\MigratorException;
 use Symfony\Component\Finder\Finder;
 
 class VersionFinder

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations\tests\Unit;
+namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionFinder;
@@ -17,7 +17,12 @@ use PHPUnit\Framework\TestCase;
 
 class VersionFinderTest extends TestCase
 {
-    public function setUp()
+    /**
+     * @var VersionFinder
+     */
+    private $finder;
+
+    public function setUp(): void
     {
         $this->finder = new VersionFinder(array(
             __DIR__ . '/../migrations',

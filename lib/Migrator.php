@@ -62,12 +62,8 @@ class Migrator
      *
      * @return VersionInterface[] Executed migrations
      */
-    public function migrate($to = null, OutputInterface $output)
+    public function migrate(?string $to, OutputInterface $output)
     {
-        if (false === $to) {
-            return array();
-        }
-
         $from = $this->versionStorage->getCurrentVersion();
         $to = $this->resolveTo($to, $from);
 
@@ -79,7 +75,6 @@ class Migrator
             return array();
         }
 
-        $start = microtime(true);
         $position = 0;
         $output->writeln(sprintf('<comment>%s</comment> %d version(s):', ($direction == 'up' ? 'Upgrading' : 'Reverting'), count($versionsToExecute)));
         foreach ($versionsToExecute as $timestamp => $version) {

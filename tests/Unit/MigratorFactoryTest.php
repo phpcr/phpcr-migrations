@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations\tests\Unit;
+namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\Migrator;
 use PHPCR\Migrations\MigratorFactory;
@@ -18,6 +18,7 @@ use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\VersionStorage;
 use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class MigratorFactoryTest extends TestCase
 {
