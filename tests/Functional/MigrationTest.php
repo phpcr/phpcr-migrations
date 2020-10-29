@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations\tests\Functional;
+namespace PHPCR\Migrations\Tests\Functional;
 
-use PHPCR\Migrations\BaseTestCase;
 use PHPCR\Migrations\Exception\MigratorException;
 use PHPCR\Migrations\Migrator;
+use PHPCR\Migrations\Tests\BaseTestCase;
 use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\VersionStorage;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,10 +27,11 @@ class MigrationTest extends BaseTestCase
 
     private $output;
     private $filesystem;
+    private $migrationDistDir;
     private $migrationDir;
     private $storage;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initPhpcr();
         $this->migrationDir = __DIR__ . '/../migrations';
@@ -63,9 +64,9 @@ class MigrationTest extends BaseTestCase
         $nodes = $this->session->getNode('/phpcrmig:versions')->getNodes();
         $names = array_keys((array) $nodes);
 
-        $this->assertContains('201501011200', $names);
-        $this->assertContains('201501011212', $names);
-        $this->assertContains('201501011215', $names);
+        $this->assertContains(201501011200, $names);
+        $this->assertContains(201501011212, $names);
+        $this->assertContains(201501011215, $names);
     }
 
     /**
@@ -201,6 +202,7 @@ class MigrationTest extends BaseTestCase
         $this->addVersion(self::VERSION2);
         $this->addVersion(self::VERSION3);
         $migratedVersions = $this->getMigrator()->migrate(null, $this->output);
+        $this->assertCount(3, $migratedVersions);
         $this->assertEquals(self::VERSION3, $this->storage->getCurrentVersion());
 
         $migratedVersions = $this->getMigrator()->migrate('down', $this->output);
@@ -256,8 +258,7 @@ class MigrationTest extends BaseTestCase
         $this->storage = new VersionStorage($this->session);
         $finder = new VersionFinder(array($this->migrationDir));
         $versions = $finder->getCollection();
-        $migrator = new Migrator($this->session, $versions, $this->storage);
 
-        return $migrator;
+        return new Migrator($this->session, $versions, $this->storage);
     }
 }

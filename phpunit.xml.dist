@@ -18,6 +18,7 @@
     </testsuites>
 
     <filter>
+
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>.</directory>
             <exclude>

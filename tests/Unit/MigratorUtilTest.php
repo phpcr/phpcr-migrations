@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations\tests\Unit;
+namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\MigratorUtil;
 use PHPUnit\Framework\TestCase;
