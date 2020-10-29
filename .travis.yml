@@ -19,6 +19,10 @@ matrix:
       env:
           - MINIMUM_STABILITY=dev
           - PACKAGE_VERSION=high
+    - php: nightly
+      env:
+          - MINIMUM_STABILITY=dev
+          - PACKAGE_VERSION=high
 
 before_script:
   - composer selfupdate
