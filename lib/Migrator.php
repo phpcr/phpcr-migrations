@@ -57,12 +57,12 @@ class Migrator
      * If $to is 0 then all migrations will be reverted.
      * If $to is null then all migrations will be executed.
      *
-     * @param string $to Version to run until
+     * @param string|null $to Version to run until
      * @param OutputInterface $output
      *
      * @return VersionInterface[] Executed migrations
      */
-    public function migrate(?string $to, OutputInterface $output)
+    public function migrate($to, OutputInterface $output)
     {
         $from = $this->versionStorage->getCurrentVersion();
         $to = $this->resolveTo($to, $from);
