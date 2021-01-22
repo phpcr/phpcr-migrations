@@ -64,6 +64,10 @@ class Migrator
      */
     public function migrate($to, OutputInterface $output)
     {
+        if (false === $to) {
+            return array();
+        }
+
         $from = $this->versionStorage->getCurrentVersion();
         $to = $this->resolveTo($to, $from);
 
