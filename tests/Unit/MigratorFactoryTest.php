@@ -18,7 +18,6 @@ use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\VersionStorage;
 use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class MigratorFactoryTest extends TestCase
 {
