@@ -79,6 +79,7 @@ class Migrator
             return array();
         }
 
+        $start = microtime(true);
         $position = 0;
         $output->writeln(sprintf('<comment>%s</comment> %d version(s):', ($direction == 'up' ? 'Upgrading' : 'Reverting'), count($versionsToExecute)));
         foreach ($versionsToExecute as $timestamp => $version) {
