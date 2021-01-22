@@ -57,12 +57,12 @@ class Migrator
      * If $to is 0 then all migrations will be reverted.
      * If $to is null then all migrations will be executed.
      *
-     * @param string $to Version to run until
+     * @param string|null $to Version to run until
      * @param OutputInterface $output
      *
      * @return VersionInterface[] Executed migrations
      */
-    public function migrate($to = null, OutputInterface $output)
+    public function migrate($to, OutputInterface $output)
     {
         if (false === $to) {
             return array();
@@ -79,7 +79,6 @@ class Migrator
             return array();
         }
 
-        $start = microtime(true);
         $position = 0;
         $output->writeln(sprintf('<comment>%s</comment> %d version(s):', ($direction == 'up' ? 'Upgrading' : 'Reverting'), count($versionsToExecute)));
         foreach ($versionsToExecute as $timestamp => $version) {

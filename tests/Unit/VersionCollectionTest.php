@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations\tests\Unit;
+namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionInterface;
@@ -21,7 +21,7 @@ class VersionCollectionTest extends TestCase
     const VERSION2 = '201501020000';
     const VERSION3 = '201501030000';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->version1 = $this->prophesize('PHPCR\Migrations\VersionInterface');
         $this->version2 = $this->prophesize('PHPCR\Migrations\VersionInterface');

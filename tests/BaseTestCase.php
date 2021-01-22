@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPCR\Migrations;
+namespace PHPCR\Migrations\Tests;
 
 use Jackalope\RepositoryFactoryFilesystem;
 use PHPCR\SimpleCredentials;
