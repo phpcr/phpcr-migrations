@@ -47,9 +47,7 @@ class MigratorUtil
             for (;$i < count($tokens);$i++) {
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1;$j < count($tokens); $j++) {
-                        if (\defined('T_NAME_QUALIFIED') && $tokens[$j][0] === T_NAME_QUALIFIED) {
-                            $namespace .= '\\' . $tokens[$j][1];
-                        } elseif ($tokens[$j][0] === T_STRING) {
+                        if (\defined('T_NAME_QUALIFIED') && $tokens[$j][0] === T_NAME_QUALIFIED || $tokens[$j][0] === T_STRING) {
                             $namespace .= '\\' . $tokens[$j][1];
                         } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
