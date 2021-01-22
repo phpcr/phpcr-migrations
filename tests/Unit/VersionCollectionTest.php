@@ -14,7 +14,6 @@ namespace PHPCR\Migrations\Tests\Unit;
 use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class VersionCollectionTest extends TestCase
 {
