@@ -24,4 +24,12 @@ class MigratorUtilTest extends TestCase
         $className = MigratorUtil::getClassNameFromFile(__DIR__ . '/migrations/Version201511240843.php');
         $this->assertEquals('\Sulu\Bundle\ContentBundle\Version201511240843', $className);
     }
+
+    /**
+     * It should not be confused by ::class in a file
+     */
+    public function testGetClassNameWithClassElsewhere() {
+        $className = MigratorUtil::getClassNameFromFile(__DIR__ . '/migrations/Version201712120843.php');
+        $this->assertEquals('\Sulu\Bundle\ContentBundle\Version201712120843', $className);
+    }
 }

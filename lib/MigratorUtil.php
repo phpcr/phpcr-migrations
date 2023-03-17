@@ -56,6 +56,11 @@ class MigratorUtil
                 }
 
                 if ($tokens[$i][0] === T_CLASS) {
+                    // If we have something like Test::class, we want to ignore that
+                    if (($tokens[$i - 1][1] ?? '') === '::') {
+                        continue;
+                    }
+
                     for ($j = $i + 1;$j < count($tokens);$j++) {
                         if ($tokens[$j] === '{') {
                             $class = $tokens[$i + 2][1];
