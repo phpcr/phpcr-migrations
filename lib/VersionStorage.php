@@ -11,6 +11,7 @@
 
 namespace PHPCR\Migrations;
 
+use PHPCR\NodeInterface;
 use PHPCR\SessionInterface;
 
 class VersionStorage
@@ -18,6 +19,10 @@ class VersionStorage
     private $session;
     private $storageNodeName;
     private $initialized = false;
+    /**
+     * @var NodeInterface
+     */
+    private $storageNode;
 
     public function __construct(SessionInterface $session, $storageNodeName = 'phpcrmig:versions')
     {
@@ -31,8 +36,8 @@ class VersionStorage
             return;
         }
 
-        $this->workspace = $this->session->getWorkspace();
-        $nodeTypeManager = $this->workspace->getNodeTypeManager();
+        $workspace = $this->session->getWorkspace();
+        $nodeTypeManager = $workspace->getNodeTypeManager();
 
         if (!$nodeTypeManager->hasNodeType('phpcrmig:version')) {
             $nodeTypeManager->registerNodeTypesCnd(<<<EOT
@@ -47,13 +52,10 @@ EOT
 
         $rootNode = $this->session->getRootNode();
 
-        if ($rootNode->hasNode($this->storageNodeName)) {
-            $storageNode = $rootNode->getNode($this->storageNodeName);
-        } else {
-            $storageNode = $rootNode->addNode($this->storageNodeName, 'phpcrmig:versions');
-        }
-
-        $this->storageNode = $storageNode;
+        $this->storageNode = ($rootNode->hasNode($this->storageNodeName))
+            ? $rootNode->getNode($this->storageNodeName)
+            : $rootNode->addNode($this->storageNodeName, 'phpcrmig:versions')
+        ;
     }
 
     public function getPersistedVersions()
@@ -85,7 +87,7 @@ EOT
         $versions = (array) $this->storageNode->getNodeNames();
 
         if (!$versions) {
-            return;
+            return null;
         }
 
         asort($versions);

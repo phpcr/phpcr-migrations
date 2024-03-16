@@ -86,7 +86,7 @@ class VersionCollection
     /**
      * Return the version after the given version.
      *
-     * @param string $from
+     * @param string|null $from
      */
     public function getNextVersion($from)
     {
@@ -105,8 +105,6 @@ class VersionCollection
                 return $timestamp;
             }
         }
-
-        return;
     }
 
     /**
@@ -125,10 +123,5 @@ class VersionCollection
         }
 
         return 0;
-    }
-
-    private function normalizeTs($ts)
-    {
-        return $ts ? $ts : null;
     }
 }

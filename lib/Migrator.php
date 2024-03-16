@@ -57,7 +57,7 @@ class Migrator
      * If $to is 0 then all migrations will be reverted.
      * If $to is null then all migrations will be executed.
      *
-     * @param string|null $to Version to run until
+     * @param string|int|bool|null $to Version to run until
      *
      * @return VersionInterface[] Executed migrations
      */
