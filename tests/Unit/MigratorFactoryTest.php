@@ -11,24 +11,28 @@
 
 namespace PHPCR\Migrations\Tests\Unit;
 
+use PHPCR\Migrations\Migrator;
 use PHPCR\Migrations\MigratorFactory;
+use PHPCR\Migrations\VersionCollection;
+use PHPCR\Migrations\VersionFinder;
+use PHPCR\Migrations\VersionStorage;
+use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
 
 class MigratorFactoryTest extends TestCase
 {
-    public function testFactory()
+    public function testFactory(): void
     {
-        $storage = $this->prophesize('PHPCR\Migrations\VersionStorage');
-        $finder = $this->prophesize('PHPCR\Migrations\VersionFinder');
-        $session = $this->prophesize('PHPCR\SessionInterface');
-        $finder->getCollection()->willReturn($this->prophesize('PHPCR\Migrations\VersionCollection')->reveal());
+        $storage = $this->createMock(VersionStorage::class);
+        $finder = $this->createMock(VersionFinder::class);
+        $finder->expects($this->once())
+            ->method('getCollection')
+            ->willReturn($this->createMock(VersionCollection::class))
+        ;
+        $session = $this->createMock(SessionInterface::class);
 
-        $factory = new MigratorFactory(
-            $storage->reveal(),
-            $finder->reveal(),
-            $session->reveal()
-        );
+        $factory = new MigratorFactory($storage, $finder, $session);
         $migrator = $factory->getMigrator();
-        $this->assertInstanceOf('PHPCR\Migrations\Migrator', $migrator);
+        $this->assertInstanceOf(Migrator::class, $migrator);
     }
 }
