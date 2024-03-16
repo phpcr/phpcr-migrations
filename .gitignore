@@ -1,5 +1,7 @@
-composer.lock
-vendor
-tests/data
-tests/migrations
-.phpunit.result.cache
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+/composer.lock
+/phpunit.xml
+/tests/data
+/tests/migrations
+/vendor

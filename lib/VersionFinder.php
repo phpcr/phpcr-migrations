@@ -22,9 +22,7 @@ class VersionFinder
     public function __construct(array $paths)
     {
         if (empty($paths)) {
-            throw new \RuntimeException(
-                'No paths were provided to the version finder.'
-            );
+            throw new \RuntimeException('No paths were provided to the version finder.');
         }
         $this->paths = $paths;
     }
@@ -35,7 +33,7 @@ class VersionFinder
             return $this->collection;
         }
 
-        $versions = array();
+        $versions = [];
         $finder = new Finder();
         $finder->name('/Version[0-9]{12}.php/');
         $finder->files();
@@ -52,10 +50,7 @@ class VersionFinder
             $version = new $classFqn();
 
             if (!$version instanceof VersionInterface) {
-                throw new MigratorException(sprintf(
-                    'Version class "%s" must implement VersionInterface',
-                    $className
-                ));
+                throw new MigratorException(sprintf('Version class "%s" must implement VersionInterface', $className));
             }
 
             $versionTimestamp = substr($versionFile->getBaseName(), 7, 12);

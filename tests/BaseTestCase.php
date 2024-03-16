@@ -22,14 +22,14 @@ class BaseTestCase extends TestCase
 
     public function initPhpcr()
     {
-        $path = __DIR__ . '/data';
+        $path = __DIR__.'/data';
         $sfFs = new Filesystem();
         $sfFs->remove($path);
         $factory = new RepositoryFactoryFilesystem();
-        $repository = $factory->getRepository(array(
+        $repository = $factory->getRepository([
             'path' => $path,
             'search.enabled' => false,
-        ));
+        ]);
         $credentials = new SimpleCredentials('admin', 'admin');
         $this->session = $repository->login($credentials);
     }

@@ -20,9 +20,9 @@ class Migrator
     private $session;
     private $versionCollection;
     private $versionStorage;
-    private $actions = array(
+    private $actions = [
         'up', 'down', 'top', 'bottom',
-    );
+    ];
 
     public function __construct(
         SessionInterface $session,
@@ -57,15 +57,14 @@ class Migrator
      * If $to is 0 then all migrations will be reverted.
      * If $to is null then all migrations will be executed.
      *
-     * @param string|null $to Version to run until
-     * @param OutputInterface $output
+     * @param string|int|bool|null $to Version to run until
      *
      * @return VersionInterface[] Executed migrations
      */
     public function migrate($to, OutputInterface $output)
     {
         if (false === $to) {
-            return array();
+            return [];
         }
 
         $from = $this->versionStorage->getCurrentVersion();
@@ -76,17 +75,17 @@ class Migrator
         $versionsToExecute = $this->versionCollection->getVersions($from, $to, $direction);
 
         if (!$versionsToExecute) {
-            return array();
+            return [];
         }
 
         $position = 0;
-        $output->writeln(sprintf('<comment>%s</comment> %d version(s):', ($direction == 'up' ? 'Upgrading' : 'Reverting'), count($versionsToExecute)));
+        $output->writeln(sprintf('<comment>%s</comment> %d version(s):', 'up' == $direction ? 'Upgrading' : 'Reverting', count($versionsToExecute)));
         foreach ($versionsToExecute as $timestamp => $version) {
-            $position++;
-            $output->writeln(sprintf(' %s [<info>%d/%d</info>]: %s', $direction == 'up' ? '+' : '-', $position, count($versionsToExecute), $timestamp));
+            ++$position;
+            $output->writeln(sprintf(' %s [<info>%d/%d</info>]: %s', 'up' == $direction ? '+' : '-', $position, count($versionsToExecute), $timestamp));
             $version->$direction($this->session);
 
-            if ($direction === 'down') {
+            if ('down' === $direction) {
                 $this->versionStorage->remove($timestamp);
             } else {
                 $this->versionStorage->add($timestamp);
@@ -117,34 +116,28 @@ class Migrator
             $to = strtolower($to);
         }
 
-        if ($to === 'down') {
+        if ('down' === $to) {
             $to = $this->versionCollection->getPreviousVersion($from);
         }
 
-        if ($to === 'up') {
+        if ('up' === $to) {
             $to = $this->versionCollection->getNextVersion($from);
         }
 
-        if ($to === 'bottom') {
+        if ('bottom' === $to) {
             $to = 0;
         }
 
-        if ($to === 'top' || null === $to) {
+        if ('top' === $to || null === $to) {
             $to = $this->versionCollection->getLatestVersion();
         }
 
         if (0 !== $to && false === strtotime($to)) {
-            throw new MigratorException(sprintf(
-                'Unknown migration action "%s". Known actions: "%s"',
-                $to,
-                implode('", "', $this->actions)
-            ));
+            throw new MigratorException(sprintf('Unknown migration action "%s". Known actions: "%s"', $to, implode('", "', $this->actions)));
         }
 
         if (0 !== $to && !$this->versionCollection->has($to)) {
-            throw new MigratorException(sprintf(
-                'Unknown version "%s"', $to
-            ));
+            throw new MigratorException(sprintf('Unknown version "%s"', $to));
         }
 
         return $to;

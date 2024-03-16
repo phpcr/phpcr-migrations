@@ -12,14 +12,13 @@
 namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\VersionCollection;
-use PHPCR\Migrations\VersionInterface;
 use PHPUnit\Framework\TestCase;
 
 class VersionCollectionTest extends TestCase
 {
-    const VERSION1 = '201501010000';
-    const VERSION2 = '201501020000';
-    const VERSION3 = '201501030000';
+    public const VERSION1 = '201501010000';
+    public const VERSION2 = '201501020000';
+    public const VERSION3 = '201501030000';
 
     public function setUp(): void
     {
@@ -33,10 +32,10 @@ class VersionCollectionTest extends TestCase
      */
     public function testHas()
     {
-        $collection = $this->createCollection(array(
+        $collection = $this->createCollection([
             self::VERSION1 => $this->version1->reveal(),
             self::VERSION3 => $this->version3->reveal(),
-        ));
+        ]);
         $this->assertTrue($collection->has(self::VERSION1));
         $this->assertTrue($collection->has(self::VERSION3));
         $this->assertFalse($collection->has(self::VERSION2));
@@ -47,17 +46,17 @@ class VersionCollectionTest extends TestCase
      */
     public function testFromAToBUp()
     {
-        $collection = $this->createCollection(array(
+        $collection = $this->createCollection([
             self::VERSION1 => $this->version1->reveal(),
             self::VERSION2 => $this->version2->reveal(),
             self::VERSION3 => $this->version3->reveal(),
-        ));
+        ]);
 
         $versions = $collection->getVersions(self::VERSION1, self::VERSION3);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             self::VERSION2, self::VERSION3,
-        ), array_map('strval', array_keys($versions)));
+        ], array_map('strval', array_keys($versions)));
     }
 
     /**
@@ -65,17 +64,17 @@ class VersionCollectionTest extends TestCase
      */
     public function testDownFromAToBUp()
     {
-        $collection = $this->createCollection(array(
+        $collection = $this->createCollection([
             self::VERSION1 => $this->version1->reveal(),
             self::VERSION2 => $this->version2->reveal(),
             self::VERSION3 => $this->version3->reveal(),
-        ));
+        ]);
 
         $versions = $collection->getVersions(self::VERSION3, self::VERSION1);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             self::VERSION3, self::VERSION2,
-        ), array_map('strval', array_keys($versions)));
+        ], array_map('strval', array_keys($versions)));
     }
 
     private function createCollection($versions)

@@ -11,7 +11,6 @@
 
 namespace PHPCR\Migrations\Tests\Unit;
 
-use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionFinder;
 use PHPUnit\Framework\TestCase;
 
@@ -24,9 +23,9 @@ class VersionFinderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->finder = new VersionFinder(array(
-            __DIR__ . '/../migrations',
-        ));
+        $this->finder = new VersionFinder([
+            __DIR__.'/../migrations',
+        ]);
     }
 
     /**
@@ -49,6 +48,6 @@ class VersionFinderTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No paths were provided');
-        $versionFinder = new VersionFinder(array());
+        $versionFinder = new VersionFinder([]);
     }
 }

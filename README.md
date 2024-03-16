@@ -2,7 +2,7 @@ PHPCR Migrations
 ================
 
 [![Build
-Status](https://travis-ci.org/phpcr/phpcr-migrations.svg?branch=master)](https://travis-ci.org/phpcr/phpcr-migrations)
+Status](https://github.com/phpcr/phpcr-migrations/actions/workflows/test-application.yaml/badge.svg)](https://github.com/phpcr/phpcr-migrations/actions/workflows/test-application.yaml)
 
 Migrations library for PHPCR influenced by [Doctrine
 migrations](https://github.com/doctrine/migrations).

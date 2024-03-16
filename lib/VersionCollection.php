@@ -34,25 +34,25 @@ class VersionCollection
     public function getVersions($from, $to)
     {
         $direction = $from > $to ? 'down' : 'up';
-        $result = array();
+        $result = [];
         $versions = $this->versions;
 
         if ($from == $to) {
-            return array();
+            return [];
         }
 
-        if ($direction === 'up') {
+        if ('up' === $direction) {
             ksort($versions, SORT_STRING);
         } else {
             krsort($versions, SORT_STRING);
         }
 
-        $found = $from === null ? true : false;
+        $found = null === $from ? true : false;
         foreach ($versions as $timestamp => $version) {
             if ($timestamp == $from) {
                 $found = true;
 
-                if ($direction == 'down') {
+                if ('down' == $direction) {
                     $result[$timestamp] = $version;
                 }
 
@@ -64,7 +64,7 @@ class VersionCollection
             }
 
             if ($timestamp == $to) {
-                if ($direction == 'up') {
+                if ('up' == $direction) {
                     $result[$timestamp] = $version;
                 }
                 break;
@@ -86,13 +86,13 @@ class VersionCollection
     /**
      * Return the version after the given version.
      *
-     * @param string $from
+     * @param string|null $from
      */
     public function getNextVersion($from)
     {
         $found = false;
         foreach (array_keys($this->versions) as $timestamp) {
-            if ($from === null) {
+            if (null === $from) {
                 return $timestamp;
             }
 
@@ -105,8 +105,6 @@ class VersionCollection
                 return $timestamp;
             }
         }
-
-        return;
     }
 
     /**
@@ -125,10 +123,5 @@ class VersionCollection
         }
 
         return 0;
-    }
-
-    private function normalizeTs($ts)
-    {
-        return $ts ? $ts : null;
     }
 }
