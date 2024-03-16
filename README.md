@@ -22,7 +22,7 @@ use PHPCR\Migrations\VersionFinder;
 use PHPCR\Migrations\Migrator;
 
 $storage = new VersionStorage($phpcrSession);
-$finder = new VersionFinder(array('/path/to/migrations'));
+$finder = new VersionFinder(['/path/to/migrations']);
 
 $versions = $finder->getVersionCollection();
 $migrator = new Migrator($session, $versionCollection, $storage);

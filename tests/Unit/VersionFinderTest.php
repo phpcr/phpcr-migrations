@@ -11,15 +11,13 @@
 
 namespace PHPCR\Migrations\Tests\Unit;
 
+use PHPCR\Migrations\VersionCollection;
 use PHPCR\Migrations\VersionFinder;
 use PHPUnit\Framework\TestCase;
 
 class VersionFinderTest extends TestCase
 {
-    /**
-     * @var VersionFinder
-     */
-    private $finder;
+    private VersionFinder $finder;
 
     public function setUp(): void
     {
@@ -33,10 +31,10 @@ class VersionFinderTest extends TestCase
      *
      * @runInSeparateProcess
      */
-    public function testGetCollection()
+    public function testGetCollection(): void
     {
         $collection = $this->finder->getCollection();
-        $this->assertInstanceOf('PHPCR\Migrations\VersionCollection', $collection);
+        $this->assertInstanceOf(VersionCollection::class, $collection);
         $versions = $collection->getAllVersions();
         $this->assertCount(3, $versions);
     }
@@ -44,10 +42,10 @@ class VersionFinderTest extends TestCase
     /**
      * It should do nothing if no migrations paths are given.
      */
-    public function testNoMigrationPaths()
+    public function testNoMigrationPaths(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No paths were provided');
-        $versionFinder = new VersionFinder([]);
+        new VersionFinder([]);
     }
 }

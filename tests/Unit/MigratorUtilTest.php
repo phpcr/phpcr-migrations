@@ -13,15 +13,16 @@ namespace PHPCR\Migrations\Tests\Unit;
 
 use PHPCR\Migrations\MigratorUtil;
 use PHPUnit\Framework\TestCase;
+use Sulu\Bundle\ContentBundle\Version201511240843;
 
 class MigratorUtilTest extends TestCase
 {
     /**
      * It should return the classname of a file.
      */
-    public function testGetClassName()
+    public function testGetClassName(): void
     {
         $className = MigratorUtil::getClassNameFromFile(__DIR__.'/migrations/Version201511240843.php');
-        $this->assertEquals('\Sulu\Bundle\ContentBundle\Version201511240843', $className);
+        $this->assertEquals('\\'.Version201511240843::class, $className);
     }
 }

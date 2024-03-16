@@ -25,11 +25,11 @@ class MigrationTest extends BaseTestCase
     public const VERSION2 = '201501011212';
     public const VERSION3 = '201501011215';
 
-    private $output;
-    private $filesystem;
-    private $migrationDistDir;
-    private $migrationDir;
-    private $storage;
+    private BufferedOutput $output;
+    private Filesystem $filesystem;
+    private string $migrationDistDir;
+    private string $migrationDir;
+    private VersionStorage $storage;
 
     public function setUp(): void
     {
@@ -49,7 +49,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should execute all the migrations and populate the versions table.
      */
-    public function testMigration()
+    public function testMigration(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -72,7 +72,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should not run migrations that have already been executed.
      */
-    public function testMigrateAgain()
+    public function testMigrateAgain(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -88,7 +88,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should run new migrations.
      */
-    public function testMigrateAdd()
+    public function testMigrateAdd(): void
     {
         $this->addVersion(self::VERSION1);
 
@@ -105,7 +105,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should run migrations backwards.
      */
-    public function testMigrateDown()
+    public function testMigrateDown(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -136,7 +136,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should do nothing if target version is current version.
      */
-    public function testMigrateToCurrentVersionFromCurrent()
+    public function testMigrateToCurrentVersionFromCurrent(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -150,7 +150,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should add all migrations.
      */
-    public function testInitialize()
+    public function testInitialize(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -164,7 +164,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should throw an exception if trying to reiniitialize.
      */
-    public function testReinitialize()
+    public function testReinitialize(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -179,7 +179,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should migrate to the next version.
      */
-    public function testMigrateNext()
+    public function testMigrateNext(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -196,7 +196,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should migrate to the previous version.
      */
-    public function testMigratePrevious()
+    public function testMigratePrevious(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -223,7 +223,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should migrate to the top.
      */
-    public function testMigrateTop()
+    public function testMigrateTop(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -235,7 +235,7 @@ class MigrationTest extends BaseTestCase
     /**
      * It should migrate to the bottom.
      */
-    public function testMigrateBottom()
+    public function testMigrateBottom(): void
     {
         $this->addVersion(self::VERSION1);
         $this->addVersion(self::VERSION2);
@@ -245,7 +245,7 @@ class MigrationTest extends BaseTestCase
         $this->assertCount(3, $migratedVersions);
     }
 
-    private function addVersion($version)
+    private function addVersion($version): void
     {
         $this->filesystem->copy(
             $this->migrationDistDir.'/Version'.$version.'.php',
@@ -253,7 +253,7 @@ class MigrationTest extends BaseTestCase
         );
     }
 
-    private function getMigrator()
+    private function getMigrator(): Migrator
     {
         $this->storage = new VersionStorage($this->session);
         $finder = new VersionFinder([$this->migrationDir]);
