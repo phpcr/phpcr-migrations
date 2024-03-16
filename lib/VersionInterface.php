@@ -28,15 +28,11 @@ interface VersionInterface
 {
     /**
      * Migrate the repository up.
-     *
-     * @param SessionInterface $session
      */
     public function up(SessionInterface $session);
 
     /**
      * Migrate the system down.
-     *
-     * @param SessionInterface $session
      */
     public function down(SessionInterface $session);
 }

@@ -21,9 +21,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class MigrationTest extends BaseTestCase
 {
-    const VERSION1 = '201501011200';
-    const VERSION2 = '201501011212';
-    const VERSION3 = '201501011215';
+    public const VERSION1 = '201501011200';
+    public const VERSION2 = '201501011212';
+    public const VERSION3 = '201501011215';
 
     private $output;
     private $filesystem;
@@ -34,8 +34,8 @@ class MigrationTest extends BaseTestCase
     public function setUp(): void
     {
         $this->initPhpcr();
-        $this->migrationDir = __DIR__ . '/../migrations';
-        $this->migrationDistDir = __DIR__ . '/../migrations.dist';
+        $this->migrationDir = __DIR__.'/../migrations';
+        $this->migrationDistDir = __DIR__.'/../migrations.dist';
         $this->filesystem = new Filesystem();
 
         if (file_exists($this->migrationDir)) {
@@ -248,15 +248,15 @@ class MigrationTest extends BaseTestCase
     private function addVersion($version)
     {
         $this->filesystem->copy(
-            $this->migrationDistDir . '/Version' . $version . '.php',
-            $this->migrationDir . '/Version' . $version . '.php'
+            $this->migrationDistDir.'/Version'.$version.'.php',
+            $this->migrationDir.'/Version'.$version.'.php'
         );
     }
 
     private function getMigrator()
     {
         $this->storage = new VersionStorage($this->session);
-        $finder = new VersionFinder(array($this->migrationDir));
+        $finder = new VersionFinder([$this->migrationDir]);
         $versions = $finder->getCollection();
 
         return new Migrator($this->session, $versions, $this->storage);

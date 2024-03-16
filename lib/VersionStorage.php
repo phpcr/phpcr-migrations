@@ -42,7 +42,7 @@ class VersionStorage
 [phpcrmig:versions] > nt:base
 +* (phpcrmig:version)
 EOT
-            , true);
+                , true);
         }
 
         $rootNode = $this->session->getRootNode();
@@ -61,13 +61,13 @@ EOT
         $this->init();
 
         $versionNodes = $this->storageNode->getNodes();
-        $versions = array();
+        $versions = [];
 
         foreach ($versionNodes as $versionNode) {
-            $versions[$versionNode->getName()] = array(
+            $versions[$versionNode->getName()] = [
                 'name' => $versionNode->getName(),
                 'executed' => $versionNode->getPropertyValue('jcr:created'),
-            );
+            ];
         }
 
         return $versions;
@@ -75,7 +75,7 @@ EOT
 
     public function hasVersioningNode()
     {
-        return $this->session->nodeExists('/' . $this->storageNodeName);
+        return $this->session->nodeExists('/'.$this->storageNodeName);
     }
 
     public function getCurrentVersion()
